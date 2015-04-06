@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<style>
+body{
+  font: message-box;
+  background-color: #E9E9E9;
+  padding: 10px;
+}
+.segment label{
+  display: inline-block;
+  width: 120px;
+  text-align: right;
+  margin-right: 10px;
+}
+.segment .info{
+  margin-top: 5px;
+  margin-left: 135px;
+  font-size: 80%;
+}
+</style>
+<form>
+  <div class="segment">
+    <label>Characters limit:</label> <input id="charsLimit" type="number" pattern="\d+" min="10" style="width: 4em">
+    <div class="info">
+      Set this to limit the number of characters of the current song title displayed. Set to no value for no limit.
+    </div>
+  </div>
+</form>
+<script>
+$charsLimit = document.getElementById('charsLimit');
+$charsLimit.addEventListener('change', function(){
+  localStorage.setItem('prefs.charsLimit', parseInt($charsLimit.value, 10));
+});
+</script>

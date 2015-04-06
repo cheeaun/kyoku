@@ -1,0 +1,21 @@
+{
+  "name": "kyoku",
+  "version": "0.0.1",
+  "description": "A tiny app that shows iTunes current playing song on Mac menu bar",
+  "main": "app.js",
+  "keywords": [
+    "itunes",
+    "mac",
+    "menu",
+    "menubar",
+    "song"
+  ],
+  "author": "Lim Chee Aun <cheeaun@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "playback": "^0.2.0"
+  },
+  "devDependencies": {
+    "atom-shell": "^0.22.3"
+  }
+}
