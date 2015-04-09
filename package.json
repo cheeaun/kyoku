@@ -13,9 +13,15 @@
   "author": "Lim Chee Aun <cheeaun@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "playback": "^0.2.0"
+    "playback": "^0.2.0",
+    "user-home": "^1.1.1"
   },
   "devDependencies": {
-    "atom-shell": "^0.22.3"
+    "atom-shell": "^0.22.3",
+    "atom-shell-packager": "^2.1.1"
+  },
+  "scripts": {
+    "start": "node_modules/.bin/atom-shell .",
+    "package": "node_modules/.bin/atom-shell-packager . Kyoku --ignore=node_modules/atom-shell && cp icons/music-note.icns Kyoku.app/Contents/Resources/atom.icns"
   }
 }

@@ -3,6 +3,17 @@ var Menu = require('menu');
 var Tray = require('tray');
 var BrowserWindow = require('browser-window');
 
+var userHome = require('user-home');
+var TinyStore = require(__dirname + '/tinystore');
+var store = global.store = new TinyStore(userHome + '/.kyoku');
+
+var itunes = require('playback');
+
+// Don't quit app when closing any spawned windows
+app.on('window-all-closed', function(e){
+  e.preventDefault();
+});
+
 var defaultTitle = '♫ Kyoku';
 
 var appTray, contextMenu;
@@ -11,15 +22,17 @@ app.on('ready', function(){
   contextMenu = Menu.buildFromTemplate([
     // { label: 'Album', visible: false, enabled: false },
     // { label: 'Artist', visible: false, enabled: false },
-    // { label: 'Preferences…', click: showOptions },
+    { label: 'Preferences…', click: showOptions },
     { label: 'Quit', click: app.quit }
   ]);
   appTray.setTitle(defaultTitle);
   appTray.setContextMenu(contextMenu);
+});
 
+function showOptions(){
   var optionsWindow = new BrowserWindow({
     width: 400,
-    height: 300,
+    height: 200,
     show: false,
     center: true,
     resizable: false,
@@ -27,16 +40,24 @@ app.on('ready', function(){
     'always-on-top': true,
     title: 'Preferences'
   });
-  optionsWindow.loadUrl('file://' + __dirname + '/options.html');
-
-  function showOptions(){
+  optionsWindow.loadUrl('file://' + __dirname + '/preferences.html');
+  optionsWindow.webContents.on('did-finish-load', function(){
     optionsWindow.show();
-  };
-});
+  });
+};
 
-var itunes = require('playback');
+function truncateName(name, charsLimit){
+  if (!charsLimit) charsLimit = store.get('charsLimit');
+  if (!charsLimit || charsLimit <= 10) return name;
+  if (name.length <= charsLimit) return name;
+  return name.slice(0, charsLimit) + '…';
+};
+
+var currentName = '', currentState = 'paused';
 itunes.on('playing', function(data){
-  appTray.setTitle('▶ ' + data.name);
+  currentState = 'playing';
+  currentName = data.name;
+  appTray.setTitle('▶ ' + truncateName(currentName) + '  ');
 
   // TODO: Update Album and Artist menu items (Atom shell doesn't support this yet)
   // var menuItems = contextMenu.items;
@@ -56,7 +77,14 @@ itunes.on('playing', function(data){
   // }
 });
 itunes.on('paused', function(data){
+  currentState = 'paused';
   appTray.setTitle(defaultTitle);
+});
+
+store.on('change', function(key, value){
+  if (key == 'charsLimit' && currentState == 'playing'){
+    appTray.setTitle('▶ ' + truncateName(currentName, value) + '  ');
+  }
 });
 
 app.dock.hide();

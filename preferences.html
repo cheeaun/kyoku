@@ -26,8 +26,14 @@ body{
   </div>
 </form>
 <script>
+var remote = require('remote');
+var store = remote.getGlobal('store');
+
 $charsLimit = document.getElementById('charsLimit');
-$charsLimit.addEventListener('change', function(){
-  localStorage.setItem('prefs.charsLimit', parseInt($charsLimit.value, 10));
-});
+$charsLimit.value = store.get('charsLimit') || '';
+var updateCharsLimit = function(){
+  store.set('charsLimit', parseInt($charsLimit.value, 10));
+};
+$charsLimit.addEventListener('keyup', updateCharsLimit);
+$charsLimit.addEventListener('change', updateCharsLimit);
 </script>
