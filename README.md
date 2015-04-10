@@ -5,6 +5,8 @@ Kyoku
 
 A tiny app that shows iTunes current playing song on Mac menu bar.
 
+To download the latest version, visit the [releases page](https://github.com/cheeaun/kyoku/releases).
+
 Development
 ---
 
