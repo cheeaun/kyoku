@@ -16,6 +16,13 @@ body{
   margin-left: 135px;
   font-size: 80%;
 }
+footer{
+  display: block;
+  font-size: 80%;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
 </style>
 <form>
   <div class="segment">
@@ -25,9 +32,24 @@ body{
     </div>
   </div>
 </form>
+<footer>
+  <a href="https://github.com/cheeaun/kyoku" rel="external">Kyoku</a> <span id="version"></span>, built by <a href="http://twitter.com/cheeaun" rel="external">@cheeaun</a>.
+</footer>
 <script>
+var shell = require('shell');
 var remote = require('remote');
 var store = remote.getGlobal('store');
+
+document.addEventListener('click', function(e){
+  var target = e.target;
+  if (target.tagName.toLowerCase() == 'a' && target.rel == 'external'){
+    e.preventDefault();
+    shell.openExternal(target.href);
+  }
+}, false);
+
+var version = remote.getGlobal('app').getVersion();
+document.getElementById('version').innerHTML = version;
 
 $charsLimit = document.getElementById('charsLimit');
 $charsLimit.value = store.get('charsLimit') || '';

@@ -1,4 +1,4 @@
-var app = require('app');
+var app = global.app = require('app');
 var Menu = require('menu');
 var Tray = require('tray');
 var BrowserWindow = require('browser-window');
