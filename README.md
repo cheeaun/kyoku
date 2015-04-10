@@ -1,6 +1,8 @@
 Kyoku
 ===
 
+![Screenshot](http://i.imgur.com/nhRHJw6.png)
+
 A tiny app that shows iTunes current playing song on Mac menu bar.
 
 Development
