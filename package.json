@@ -23,5 +23,6 @@
   "scripts": {
     "start": "electron .",
     "package": "electron-packager . Kyoku --platform=darwin --arch=x64 --version=0.25.3 --ignore=.git --ignore=.DS_Store --ignore=icons --ignore=node_modules/electron --ignore=Kyoku.app && cp icons/music-note.icns Kyoku.app/Contents/Resources/atom.icns",
+    "zip": "zip -ryXq Kyoku.app.zip Kyoku.app"
   }
 }
