@@ -1,6 +1,6 @@
 {
   "name": "kyoku",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A tiny app that shows iTunes current playing song on Mac menu bar",
   "main": "app.js",
   "keywords": [
@@ -13,15 +13,15 @@
   "author": "Lim Chee Aun <cheeaun@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "playback": "^0.2.0",
-    "user-home": "^1.1.1"
+    "playback": "~0.2.0",
+    "user-home": "~1.1.1"
   },
   "devDependencies": {
-    "atom-shell": "^0.22.3",
-    "atom-shell-packager": "^2.1.1"
+    "electron-packager": "~4.0.1",
+    "electron-prebuilt": "~0.25.3-2"
   },
   "scripts": {
-    "start": "node_modules/.bin/atom-shell .",
-    "package": "node_modules/.bin/atom-shell-packager . Kyoku --ignore=node_modules/atom-shell && cp icons/music-note.icns Kyoku.app/Contents/Resources/atom.icns"
+    "start": "electron .",
+    "package": "electron-packager . Kyoku --platform=darwin --arch=x64 --version=0.25.3 --ignore=.git --ignore=.DS_Store --ignore=icons --ignore=node_modules/electron --ignore=Kyoku.app && cp icons/music-note.icns Kyoku.app/Contents/Resources/atom.icns",
   }
 }
