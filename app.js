@@ -48,7 +48,7 @@ function showOptions(){
 
 function truncateName(name, charsLimit){
   if (!charsLimit) charsLimit = store.get('charsLimit');
-  if (!charsLimit || charsLimit <= 10) return name;
+  if (!charsLimit || charsLimit < 10) return name;
   if (name.length <= charsLimit) return name;
   return name.slice(0, charsLimit) + '…';
 };
