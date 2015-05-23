@@ -12,6 +12,8 @@ Development
 
 1. `npm install`
 2. `npm start` to launch the app
+3. `npm run package` to package the app
+4. `npm run zip` to zip the app package
 
 TODO
 ---
