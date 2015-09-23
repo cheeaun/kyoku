@@ -16,15 +16,17 @@ app.on('window-all-closed', function(e){
 
 var defaultTitle = '♫ Kyoku';
 
+var menuTemplate = [
+  { label: 'Album', visible: false, enabled: false },
+  { label: 'Artist', visible: false, enabled: false },
+  { label: 'Preferences…', click: showOptions },
+  { label: 'Quit', click: app.quit }
+];
+
 var appTray, contextMenu;
 app.on('ready', function(){
   appTray = new Tray(null);
-  contextMenu = Menu.buildFromTemplate([
-    // { label: 'Album', visible: false, enabled: false },
-    // { label: 'Artist', visible: false, enabled: false },
-    { label: 'Preferences…', click: showOptions },
-    { label: 'Quit', click: app.quit }
-  ]);
+  contextMenu = Menu.buildFromTemplate(menuTemplate);
   appTray.setTitle(defaultTitle);
   appTray.setContextMenu(contextMenu);
 });
@@ -53,12 +55,23 @@ function truncateName(name, charsLimit){
   return name.slice(0, charsLimit) + '…';
 };
 
+function updateMenuLabel(index, label){
+  menuTemplate[index].label = label;
+  menuTemplate[index].visible = label.length > 0;
+  contextMenu = Menu.buildFromTemplate(menuTemplate);
+
+  appTray.setContextMenu(contextMenu);
+};
+
 var currentName = '', currentState = 'paused';
 itunes.on('playing', function(data){
   currentState = 'playing';
   currentName = data.name;
   appTray.setTitle('▶ ' + truncateName(currentName) + '  ');
 
+  // Rebuild the whole context-menu on every change. Two times.
+  updateMenuLabel(0, (data.album) ? 'Album: ' + data.album : '');
+  updateMenuLabel(1, (data.album) ? 'Artist: ' + data.artist : '');
   // TODO: Update Album and Artist menu items (Atom shell doesn't support this yet)
   // var menuItems = contextMenu.items;
   // var albumMenu = menuItems[0];
