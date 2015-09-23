@@ -71,7 +71,7 @@ itunes.on('playing', function(data){
 
   // Rebuild the whole context-menu on every change. Two times.
   updateMenuLabel(0, (data.album) ? 'Album: ' + data.album : '');
-  updateMenuLabel(1, (data.album) ? 'Artist: ' + data.artist : '');
+  updateMenuLabel(1, (data.artist) ? 'Artist: ' + data.artist : '');
   // TODO: Update Album and Artist menu items (Atom shell doesn't support this yet)
   // var menuItems = contextMenu.items;
   // var albumMenu = menuItems[0];
