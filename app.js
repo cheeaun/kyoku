@@ -72,22 +72,6 @@ itunes.on('playing', function(data){
   // Rebuild the whole context-menu on every change. Two times.
   updateMenuLabel(0, (data.album) ? 'Album: ' + data.album : '');
   updateMenuLabel(1, (data.artist) ? 'Artist: ' + data.artist : '');
-  // TODO: Update Album and Artist menu items (Atom shell doesn't support this yet)
-  // var menuItems = contextMenu.items;
-  // var albumMenu = menuItems[0];
-  // var artistMenu = menuItems[1];
-  // if (data.album){
-  //   albumMenu.label = 'Album: ' + data.album;
-  //   albumMenu.visible = true;
-  // } else {
-  //   albumMenu.visible = false;
-  // }
-  // if (data.artist){
-  //   artistMenu.label = 'Artist: ' + data.artist;
-  //   artistMenu.visible = true;
-  // } else {
-  //   artistMenu.visible = false;
-  // }
 });
 itunes.on('paused', function(data){
   currentState = 'paused';
