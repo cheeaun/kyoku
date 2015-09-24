@@ -55,24 +55,34 @@ function truncateName(name, charsLimit){
   return name.slice(0, charsLimit) + '…';
 };
 
-function updateMenuLabel(index, label){
-  menuTemplate[index].label = label;
-  menuTemplate[index].visible = label.length > 0;
+function updateMenuLabel(items){
+  for(var index in items) {
+    var item = items[index];
+
+    for(var key in item.template) {
+      menuTemplate[index][key] = item.template[key];
+      menuTemplate[index].visible = menuTemplate[index].label.length > 0;
+    }
+  }
+
   contextMenu = Menu.buildFromTemplate(menuTemplate);
 
   appTray.setContextMenu(contextMenu);
 };
 
 var currentName = '', currentState = 'paused';
+
 itunes.on('playing', function(data){
   currentState = 'playing';
   currentName = data.name;
   appTray.setTitle('▶ ' + truncateName(currentName) + '  ');
 
-  // Rebuild the whole context-menu on every change. Two times.
-  updateMenuLabel(0, (data.album) ? 'Album: ' + data.album : '');
-  updateMenuLabel(1, (data.artist) ? 'Artist: ' + data.artist : '');
+  updateMenuLabel([
+    { index: 0, template: { label: (data.album)  ? 'Album: '  + data.album  : '' } },
+    { index: 1, template: { label: (data.artist) ? 'Artist: ' + data.artist : '' } }
+  ]);
 });
+
 itunes.on('paused', function(data){
   currentState = 'paused';
   appTray.setTitle(defaultTitle);
