@@ -55,7 +55,7 @@ function truncateName(name, charsLimit){
   return name.slice(0, charsLimit) + '…';
 };
 
-function updateMenuLabel(items){
+function updateMenu(items){
   for(var index in items) {
     var item = items[index];
 
@@ -77,7 +77,7 @@ itunes.on('playing', function(data){
   currentName = data.name;
   appTray.setTitle('▶ ' + truncateName(currentName) + '  ');
 
-  updateMenuLabel([
+  updateMenu([
     { index: 0, template: { label: (data.album)  ? 'Album: '  + data.album  : '' } },
     { index: 1, template: { label: (data.artist) ? 'Artist: ' + data.artist : '' } }
   ]);
@@ -86,6 +86,10 @@ itunes.on('playing', function(data){
 itunes.on('paused', function(data){
   currentState = 'paused';
   appTray.setTitle(defaultTitle);
+  updateMenu([
+    { index: 0, template: { label: '' } },
+    { index: 1, template: { label: '' } }
+  ]);
 });
 
 store.on('change', function(key, value){
