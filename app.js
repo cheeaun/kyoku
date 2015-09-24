@@ -57,12 +57,11 @@ function truncateName(name, charsLimit){
 
 function updateMenu(items){
   for(var index in items) {
-    var item = items[index];
-
-    for(var key in item.template) {
-      menuTemplate[index][key] = item.template[key];
-      menuTemplate[index].visible = menuTemplate[index].label.length > 0;
+    for(var key in items[index].template) {
+      menuTemplate[index][key] = items[index].template[key];
     }
+
+    menuTemplate[index].visible = menuTemplate[index].label.length > 0;
   }
 
   contextMenu = Menu.buildFromTemplate(menuTemplate);
