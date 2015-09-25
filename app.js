@@ -55,20 +55,6 @@ function truncateName(name, charsLimit){
   return name.slice(0, charsLimit) + '…';
 };
 
-function updateMenu(items){
-  for(var index in items) {
-    for(var key in items[index].template) {
-      menuTemplate[index][key] = items[index].template[key];
-    }
-
-    menuTemplate[index].visible = menuTemplate[index].label.length > 0;
-  }
-
-  contextMenu = Menu.buildFromTemplate(menuTemplate);
-
-  appTray.setContextMenu(contextMenu);
-};
-
 var currentName = '', currentState = 'paused';
 
 itunes.on('playing', function(data){
@@ -76,19 +62,26 @@ itunes.on('playing', function(data){
   currentName = data.name;
   appTray.setTitle('▶ ' + truncateName(currentName) + '  ');
 
-  updateMenu([
-    { index: 0, template: { label: (data.album)  ? 'Album: '  + data.album  : '' } },
-    { index: 1, template: { label: (data.artist) ? 'Artist: ' + data.artist : '' } }
-  ]);
+  menuTemplate[0].label = (data.album)  ? 'Album: '  + data.album  : '';
+  menuTemplate[1].label = (data.artist)  ? 'Artist: '  + data.artist  : '';
+
+  menuTemplate[0].visible = data.album.length > 0;
+  menuTemplate[1].visible = data.artist.length > 0;
+
+  contextMenu = Menu.buildFromTemplate(menuTemplate);
+
+  appTray.setContextMenu(contextMenu);
 });
 
 itunes.on('paused', function(data){
   currentState = 'paused';
+
+  menuTemplate[0].visible = menuTemplate[1].visible = false;
+
+  contextMenu = Menu.buildFromTemplate(menuTemplate);
+
   appTray.setTitle(defaultTitle);
-  updateMenu([
-    { index: 0, template: { label: '' } },
-    { index: 1, template: { label: '' } }
-  ]);
+  appTray.setContextMenu(contextMenu);
 });
 
 store.on('change', function(key, value){
