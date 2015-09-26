@@ -18,7 +18,7 @@ Development
 TODO
 ---
 
-- [ ] Show Album and Artist info in the menu
+- [x] Show Album and Artist info in the menu
 - [x] Have a preference for setting custom maximum number of characters for song title
 - [x] Have a nice icon
 - [ ] Windows version?

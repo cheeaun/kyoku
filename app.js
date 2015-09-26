@@ -16,15 +16,17 @@ app.on('window-all-closed', function(e){
 
 var defaultTitle = '♫ Kyoku';
 
+var menuTemplate = [
+  { label: 'Album', visible: false, enabled: false },
+  { label: 'Artist', visible: false, enabled: false },
+  { label: 'Preferences…', click: showOptions },
+  { label: 'Quit', click: app.quit }
+];
+
 var appTray, contextMenu;
 app.on('ready', function(){
   appTray = new Tray(null);
-  contextMenu = Menu.buildFromTemplate([
-    // { label: 'Album', visible: false, enabled: false },
-    // { label: 'Artist', visible: false, enabled: false },
-    { label: 'Preferences…', click: showOptions },
-    { label: 'Quit', click: app.quit }
-  ]);
+  contextMenu = Menu.buildFromTemplate(menuTemplate);
   appTray.setTitle(defaultTitle);
   appTray.setContextMenu(contextMenu);
 });
@@ -54,31 +56,32 @@ function truncateName(name, charsLimit){
 };
 
 var currentName = '', currentState = 'paused';
+
 itunes.on('playing', function(data){
   currentState = 'playing';
   currentName = data.name;
   appTray.setTitle('▶ ' + truncateName(currentName) + '  ');
 
-  // TODO: Update Album and Artist menu items (Atom shell doesn't support this yet)
-  // var menuItems = contextMenu.items;
-  // var albumMenu = menuItems[0];
-  // var artistMenu = menuItems[1];
-  // if (data.album){
-  //   albumMenu.label = 'Album: ' + data.album;
-  //   albumMenu.visible = true;
-  // } else {
-  //   albumMenu.visible = false;
-  // }
-  // if (data.artist){
-  //   artistMenu.label = 'Artist: ' + data.artist;
-  //   artistMenu.visible = true;
-  // } else {
-  //   artistMenu.visible = false;
-  // }
+  menuTemplate[0].label = (data.album)  ? 'Album: '  + data.album  : '';
+  menuTemplate[1].label = (data.artist)  ? 'Artist: '  + data.artist  : '';
+
+  menuTemplate[0].visible = data.album.length > 0;
+  menuTemplate[1].visible = data.artist.length > 0;
+
+  contextMenu = Menu.buildFromTemplate(menuTemplate);
+
+  appTray.setContextMenu(contextMenu);
 });
+
 itunes.on('paused', function(data){
   currentState = 'paused';
+
+  menuTemplate[0].visible = menuTemplate[1].visible = false;
+
+  contextMenu = Menu.buildFromTemplate(menuTemplate);
+
   appTray.setTitle(defaultTitle);
+  appTray.setContextMenu(contextMenu);
 });
 
 store.on('change', function(key, value){
