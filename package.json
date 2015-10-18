@@ -19,11 +19,11 @@
   },
   "devDependencies": {
     "electron-packager": "~5.1.0",
-    "electron-prebuilt": "~0.33.2"
+    "electron-prebuilt": "0.34.0"
   },
   "scripts": {
     "start": "electron .",
-    "package": "electron-packager . Kyoku --overwrite --prune --platform=darwin --arch=x64 --version=0.33.2 --ignore=.DS_Store --ignore=icons --ignore=Kyoku.app --app-version=$npm_package_version --icon=icons/music-note.icns",
+    "package": "electron-packager . Kyoku --overwrite --prune --platform=darwin --arch=x64 --version=0.34.0 --ignore=.DS_Store --ignore=icons --ignore=Kyoku.app --ignore=node_modules/.bin --app-version=$npm_package_version --icon=icons/music-note.icns",
     "zip": "cd Kyoku-darwin-x64 && zip -ryXq Kyoku.app.zip Kyoku.app"
   }
 }
