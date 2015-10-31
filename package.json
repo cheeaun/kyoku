@@ -17,6 +17,10 @@
     "playback": "~0.2.0",
     "user-home": "~2.0.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cheeaun/kyoku"
+  },
   "devDependencies": {
     "electron-packager": "~5.1.0",
     "electron-prebuilt": "0.34.0"
