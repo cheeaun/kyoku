@@ -14,7 +14,6 @@
   "author": "Lim Chee Aun <cheeaun@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "playback": "~0.2.0",
     "user-home": "~2.0.0"
   },
   "repository": {
@@ -22,8 +21,8 @@
     "url": "https://github.com/cheeaun/kyoku"
   },
   "devDependencies": {
-    "electron-packager": "~5.1.0",
-    "electron-prebuilt": "0.34.0"
+    "electron-packager": "~7.0.1",
+    "electron-prebuilt": "~1.0.1"
   },
   "scripts": {
     "start": "electron .",

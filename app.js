@@ -1,13 +1,14 @@
-var app = global.app = require('app');
-var Menu = require('menu');
-var Tray = require('tray');
-var BrowserWindow = require('browser-window');
+const electron = require('electron');
+const app = global.app = electron.app;
+const Menu = electron.Menu;
+const Tray = electron.Tray;
+const BrowserWindow = electron.BrowserWindow;
 
-var userHome = require('user-home');
-var TinyStore = require(__dirname + '/tinystore');
-var store = global.store = new TinyStore(userHome + '/.kyoku');
+const userHome = require('user-home');
+const TinyStore = require(__dirname + '/tinystore');
+const store = global.store = new TinyStore(userHome + '/.kyoku');
 
-var itunes = require('playback');
+const itunes = require(__dirname + '/itunes');
 
 // Don't quit app when closing any spawned windows
 app.on('window-all-closed', function(e){
@@ -17,8 +18,9 @@ app.on('window-all-closed', function(e){
 var defaultTitle = '♫ Kyoku';
 
 var menuTemplate = [
-  { label: 'Album', visible: false, enabled: false },
+  { label: 'Name', visible: false, enabled: false },
   { label: 'Artist', visible: false, enabled: false },
+  { label: 'Album', visible: false, enabled: false },
   { label: 'Preferences…', click: showOptions },
   { label: 'Quit', click: app.quit }
 ];
@@ -42,15 +44,15 @@ function showOptions(){
     'always-on-top': true,
     title: 'Preferences'
   });
-  optionsWindow.loadUrl('file://' + __dirname + '/preferences.html');
+  optionsWindow.loadURL('file://' + __dirname + '/preferences.html');
   optionsWindow.webContents.on('did-finish-load', function(){
     optionsWindow.show();
   });
 };
 
 function truncateName(name, charsLimit){
-  if (!charsLimit) charsLimit = store.get('charsLimit');
-  if (!charsLimit || charsLimit < 10) return name;
+  if (!charsLimit) charsLimit = store.get('charsLimit') || 10;
+  if (!charsLimit || charsLimit < 5) return name;
   if (name.length <= charsLimit) return name;
   return name.slice(0, charsLimit) + '…';
 };
@@ -62,11 +64,13 @@ itunes.on('playing', function(data){
   currentName = data.name;
   appTray.setTitle('▶ ' + truncateName(currentName) + '  ');
 
-  menuTemplate[0].label = (data.album)  ? 'Album: '  + data.album  : '';
-  menuTemplate[1].label = (data.artist)  ? 'Artist: '  + data.artist  : '';
+  menuTemplate[0].label = 'Name: ' + data.name;
+  menuTemplate[1].label = (data.artist) ? 'Artist: ' + data.artist : '';
+  menuTemplate[2].label = (data.album) ? 'Album: ' + data.album : '';
 
-  menuTemplate[0].visible = data.album.length > 0;
+  menuTemplate[0].visible = true;
   menuTemplate[1].visible = data.artist.length > 0;
+  menuTemplate[2].visible = data.album.length > 0;
 
   contextMenu = Menu.buildFromTemplate(menuTemplate);
 
@@ -76,7 +80,7 @@ itunes.on('playing', function(data){
 itunes.on('paused', function(data){
   currentState = 'paused';
 
-  menuTemplate[0].visible = menuTemplate[1].visible = false;
+  menuTemplate[0].visible = menuTemplate[1].visible = menuTemplate[2].visible = false;
 
   contextMenu = Menu.buildFromTemplate(menuTemplate);
 

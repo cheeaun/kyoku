@@ -29,7 +29,7 @@ footer{
 </style>
 <form>
   <div class="segment">
-    <label>Characters limit:</label> <input id="charsLimit" type="number" pattern="\d+" min="10" style="width: 4em">
+    <label>Characters limit:</label> <input id="charsLimit" type="number" pattern="\d+" min="5" style="width: 4em">
     <div class="info">
       Set this to limit the number of characters of the current song title displayed. Set to no value for no limit.
     </div>
@@ -39,8 +39,9 @@ footer{
   <a href="https://github.com/cheeaun/kyoku" rel="external">Kyoku</a> <span id="version"></span>, built by <a href="http://twitter.com/cheeaun" rel="external">@cheeaun</a>.
 </footer>
 <script>
-var shell = require('shell');
-var remote = require('remote');
+const electron = require('electron');
+const shell = electron.shell;
+const remote = electron.remote;
 var store = remote.getGlobal('store');
 
 document.addEventListener('click', function(e){
@@ -55,7 +56,7 @@ var version = remote.getGlobal('app').getVersion();
 document.getElementById('version').innerHTML = version;
 
 $charsLimit = document.getElementById('charsLimit');
-$charsLimit.value = store.get('charsLimit') || '';
+$charsLimit.value = store.get('charsLimit') || 10;
 var updateCharsLimit = function(){
   store.set('charsLimit', parseInt($charsLimit.value, 10));
 };
