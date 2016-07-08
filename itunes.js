@@ -12,7 +12,7 @@ var Itunes = function(){
     + 'var itunes = Application("iTunes");'
     + 'var currentTrack = itunes.currentTrack();'
     + 'JSON.stringify({'
-      + 'name: currentTrack.name(),'
+      + 'name: itunes.currentStreamTitle() || currentTrack.name(),'
       + 'artist: currentTrack.artist(),'
       + 'album: currentTrack.album(),'
       + 'playing: itunes.playerState() == "playing"'
